@@ -1,14 +1,9 @@
----
-title: 'Reproducible Research: Peer Assessment 1'
-output:
-  html_document:
-    keep_md: yes
-  pdf_document: default
----
+# Reproducible Research: Peer Assessment 1
 
 
 ## Loading and preprocessing the data
-```{r}
+
+```r
 activity <- read.csv("~/Documents/reprod_res/RepData_PeerAssessment1/activity.csv", stringsAsFactors=FALSE)
 
         ##removing steps=0 while keeping steps=NA
@@ -16,25 +11,48 @@ activity <- read.csv("~/Documents/reprod_res/RepData_PeerAssessment1/activity.cs
 ```
 
 ## What is mean total number of steps taken per day?
-```{r}
+
+```r
 total_steps<-aggregate(dt1$steps, by=list(dt1$date),sum)
 hist(total_steps[,2], xlab="total steps", main="Histogram of steps")
+```
 
+![plot of chunk unnamed-chunk-2](./PA1_template_files/figure-html/unnamed-chunk-2.png) 
+
+```r
 mean_steps<-aggregate(dt1$steps, by=list(dt1$date), mean)
 median_steps<-aggregate(dt1$steps, by=list(dt1$date), median)
 ```
 
 ## What is the average daily activity pattern?
-```{r}
+
+```r
 mean_int<-aggregate(activity$steps, by=list(activity$interval), na.rm=T, mean)
 plot(mean_int[,1],mean_int[,2],type="l", xlab="5 min interval", ylab="mean")
+```
+
+![plot of chunk unnamed-chunk-3](./PA1_template_files/figure-html/unnamed-chunk-3.png) 
+
+```r
         ##Which interval contains the maxmum number of steps?
         mean_int[which.max(mean_int[,2]),][,1]
 ```
 
+```
+## [1] 835
+```
+
 ## Imputing missing values
-```{r}
+
+```r
 dim(activity[is.na(activity[,1]),])[1] ##Number of NAs
+```
+
+```
+## [1] 2304
+```
+
+```r
         ##Devise a strategy for filling in all of the NAs.
                 ##fill with the mean for 5-minute interval
                 activity2<-activity
@@ -48,8 +66,11 @@ dim(activity[is.na(activity[,1]),])[1] ##Number of NAs
         hist(total_steps2[,2], xlab="total # steps",main="Histogram of total steps (-NA)")
 ```
 
+![plot of chunk unnamed-chunk-4](./PA1_template_files/figure-html/unnamed-chunk-4.png) 
+
 ## Are there differences in activity patterns between weekdays and weekends?
-```{r}
+
+```r
 activity2$date<-as.POSIXct(activity2$date)
   weekDayEnd<-factor(weekdays(activity2$date))
   ## Replace "Fri", "Mon", "Sat", "Sun", "Thu", "Tue" and "Wed" with "weekday" or "weekend".
@@ -63,4 +84,6 @@ activity2$date<-as.POSIXct(activity2$date)
         plot(meanWeekDayEnd[,1][meanWeekDayEnd[,2]=="weekday"],meanWeekDayEnd[,3][meanWeekDayEnd[,2]=="weekday"],xlab="5 min interval",ylab="average of steps (weekday)",type="l")
         plot(meanWeekDayEnd[,1][meanWeekDayEnd[,2]=="weekend"],meanWeekDayEnd[,3][meanWeekDayEnd[,2]=="weekend"],xlab="5 min interval",ylab="average of steps (weekend)",type="l")
 ```
+
+![plot of chunk unnamed-chunk-5](./PA1_template_files/figure-html/unnamed-chunk-5.png) 
 
