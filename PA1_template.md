@@ -4,6 +4,9 @@
 ## Loading and preprocessing the data
 
 ```r
+fileUrl<-"https://d396qusza40orc.cloudfront.net/repdata%2Fdata%2Factivity.zip"
+download.file(fileUrl, destfile="./activity.zip", method="curl")
+dateDownloaded<-date()
 activity <- read.csv("~/Documents/reprod_res/RepData_PeerAssessment1/activity.csv", stringsAsFactors=FALSE)
 
         ##removing steps=0 while keeping steps=NA
@@ -17,7 +20,7 @@ total_steps<-aggregate(dt1$steps, by=list(dt1$date),sum)
 hist(total_steps[,2], xlab="total steps", main="Histogram of steps")
 ```
 
-![plot of chunk unnamed-chunk-2](./PA1_template_files/figure-html/unnamed-chunk-2.png) 
+![](./PA1_template_files/figure-html/unnamed-chunk-2-1.png) 
 
 ```r
 mean_steps<-aggregate(dt1$steps, by=list(dt1$date), mean)
@@ -31,7 +34,7 @@ mean_int<-aggregate(activity$steps, by=list(activity$interval), na.rm=T, mean)
 plot(mean_int[,1],mean_int[,2],type="l", xlab="5 min interval", ylab="mean")
 ```
 
-![plot of chunk unnamed-chunk-3](./PA1_template_files/figure-html/unnamed-chunk-3.png) 
+![](./PA1_template_files/figure-html/unnamed-chunk-3-1.png) 
 
 ```r
         ##Which interval contains the maxmum number of steps?
@@ -66,7 +69,7 @@ dim(activity[is.na(activity[,1]),])[1] ##Number of NAs
         hist(total_steps2[,2], xlab="total # steps",main="Histogram of total steps (-NA)")
 ```
 
-![plot of chunk unnamed-chunk-4](./PA1_template_files/figure-html/unnamed-chunk-4.png) 
+![](./PA1_template_files/figure-html/unnamed-chunk-4-1.png) 
 
 ## Are there differences in activity patterns between weekdays and weekends?
 
@@ -85,5 +88,5 @@ activity2$date<-as.POSIXct(activity2$date)
         plot(meanWeekDayEnd[,1][meanWeekDayEnd[,2]=="weekend"],meanWeekDayEnd[,3][meanWeekDayEnd[,2]=="weekend"],xlab="5 min interval",ylab="average of steps (weekend)",type="l")
 ```
 
-![plot of chunk unnamed-chunk-5](./PA1_template_files/figure-html/unnamed-chunk-5.png) 
+![](./PA1_template_files/figure-html/unnamed-chunk-5-1.png) 
 
